@@ -7,13 +7,21 @@ class Particle {
   PVector velocity;
 
   float radius, m;
+  int canvasWidth, canvasHeight;
 
-  Particle(float x, float y, float r_) {
+  Particle(float x, float y, float r_, int canvasWidth, int canvasHeight) {
     position = new PVector(x, y);
     velocity = PVector.random2D();
     velocity.mult(3);
     radius = r_;
     m = radius*.1;
+    
+    this.canvasWidth = canvasWidth;
+    this.canvasHeight = canvasHeight;
+  }
+  
+  Particle(float x, float y, float r_) {
+    this(x, y, r_, width, height);
   }
 
   void update() {
@@ -21,14 +29,14 @@ class Particle {
   }
 
   void checkBoundaryCollision() {
-    if (position.x > width-radius) {
-      position.x = width-radius;
+    if (position.x > canvasWidth-radius) {
+      position.x = canvasWidth-radius;
       velocity.x *= -1;
     } else if (position.x < radius) {
       position.x = radius;
       velocity.x *= -1;
-    } else if (position.y > height-radius) {
-      position.y = height-radius;
+    } else if (position.y > canvasHeight-radius) {
+      position.y = canvasHeight-radius;
       velocity.y *= -1;
     } else if (position.y < radius) {
       position.y = radius;
