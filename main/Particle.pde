@@ -8,8 +8,10 @@ class Particle {
 
   float radius, m;
   int canvasWidth, canvasHeight;
+  
+  int type;
 
-  Particle(float x, float y, float r_, int canvasWidth, int canvasHeight) {
+  Particle(float x, float y, float r_, int type, int canvasWidth, int canvasHeight) {
     position = new PVector(x, y);
     velocity = PVector.random2D();
     velocity.mult(3);
@@ -18,10 +20,11 @@ class Particle {
     
     this.canvasWidth = canvasWidth;
     this.canvasHeight = canvasHeight;
+    this.type = type;
   }
   
-  Particle(float x, float y, float r_) {
-    this(x, y, r_, width, height);
+  Particle(float x, float y, float r_, int type) {
+    this(x, y, r_, type, width, height);
   }
 
   void update() {
@@ -140,8 +143,6 @@ class Particle {
   }
 
   void display() {
-    noStroke();
-    fill(204);
-    ellipse(position.x, position.y, radius*2, radius*2);
+    drawImage(type, position.x - radius, position.y - radius, radius * 2);
   }
 }

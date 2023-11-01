@@ -7,7 +7,7 @@
  
  */
  
-final int START_SIZE = 1000;
+final int START_SIZE = 40;
 final int BORDER = 25;
 
 Particle[] particles;
@@ -16,8 +16,9 @@ void setup() {
   size(640, 360);
   particles = new Particle[START_SIZE];
   for(int i = 0; i < START_SIZE; i++){
-    particles[i] = new Particle(int(random(width)), int(random(height)), 2, width - 2 * BORDER, height - 2 * BORDER);
+    particles[i] = new Particle(int(random(width)), int(random(height)), 10, int(random(4)), width - 2 * BORDER, height - 2 * BORDER);
   }
+  loadImages();
 }
 
 void draw() {
