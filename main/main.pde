@@ -7,15 +7,19 @@
  
  */
  
-final int START_SIZE = 100;
+final int START_SIZE = 1000;
 final int BORDER = 25;
 
 Particle[] parts;
 double[][] prob = new double[Type.TYPES][Type.TYPES];
 int[][][] results = new int[Type.TYPES][Type.TYPES][2];
 Collider[] collisionTypes = {
-   new Collider(Type.H2O, Type.H2O, 0.2, Type.H3O, Type.OH),
-   new Collider(Type.H3O, Type.OH, 0.6, Type.H2O, Type.H2O)
+   new Collider(Type.H2O, Type.H2O, 0.002, Type.H3O, Type.OH),
+   new Collider(Type.H3O, Type.OH, 0.01, Type.H2O, Type.H2O),
+   new Collider(Type.HCO3, Type.H2O, 0.05, Type.H2CO3, Type.OH),
+   new Collider(Type.H2CO3, Type.H2O, 0.7, Type.HCO3, Type.H3O),
+   new Collider(Type.HCO3, Type.H3O, 0.95, Type.H2CO3, Type.H2O),
+   new Collider(Type.H2CO3, Type.OH, 0.95, Type.HCO3, Type.H2O)
 };
 
 void setup() {
@@ -27,7 +31,7 @@ void setup() {
   
   parts = new Particle[START_SIZE];
   for(int i = 0; i < START_SIZE; i++){
-    parts[i] = new Particle(int(random(width)), int(random(height)), 30, 0, width - 2 * BORDER, height - 2 * BORDER);
+    parts[i] = new Particle(int(random(width)), int(random(height)), 10, 0, width - 2 * BORDER, height - 2 * BORDER);
   }
   loadImages();
 }
@@ -51,12 +55,20 @@ void draw() {
      for(int j = i + 1; j < parts.length; j++){
         if(parts[i].checkCollision(parts[j])) {
             if(random(1) < prob[parts[i].type][parts[j].type]){
-               parts[i].type = results[parts[i].type][parts[j].type][0];
-               parts[j].type = results[parts[i].type][parts[j].type][1];
+               int[] become = results[parts[i].type][parts[j].type];
+               parts[i].type = become[0]; //<>//
+               parts[j].type = become[1];
             }
         }
      }
   }
+  
+  int[] cnt = new int[Type.TYPES];
+  for(Particle p : parts){
+     ++cnt[p.type]; 
+  }
+  //System.out.println(cnt[Type.H2O] + " " + cnt[Type.H3O] + " " + cnt[Type.OH]);
+  System.out.println((double) cnt[Type.H3O] / START_SIZE);
   
   popMatrix();
 }

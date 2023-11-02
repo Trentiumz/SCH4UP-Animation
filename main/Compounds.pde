@@ -12,7 +12,7 @@ class Type {
 PImage[] images;
 
 void loadImages() {
- images = new PImage[]{loadImage("water.png"), loadImage("hydronium.png"), loadImage("carbonic.png"), loadImage("CO2.png"), loadImage("bicarbonate.png")}; 
+ images = new PImage[]{loadImage("water.png"), loadImage("hydronium.png"), loadImage("carbonic.png"), loadImage("CO2.png"), loadImage("bicarbonate.png"), loadImage("OH.png")}; 
 }
 
 void drawImage(int type, float x, float y, float s){
