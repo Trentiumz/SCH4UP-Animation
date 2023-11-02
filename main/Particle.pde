@@ -3,6 +3,8 @@
 */
 
 class Particle {
+  final static float SPEED = 15;
+  
   PVector position;
   PVector velocity;
 
@@ -14,7 +16,7 @@ class Particle {
   Particle(float x, float y, float r_, int type, int canvasWidth, int canvasHeight) {
     position = new PVector(x, y);
     velocity = PVector.random2D().normalize();
-    velocity.mult(7);
+    velocity.mult(SPEED);
     radius = r_;
     m = radius*.1;
     

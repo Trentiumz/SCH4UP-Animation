@@ -31,7 +31,7 @@ void setup() {
   
   parts = new Particle[START_SIZE];
   for(int i = 0; i < START_SIZE; i++){
-    parts[i] = new Particle(int(random(width)), int(random(height)), 10, 0, width - 2 * BORDER, height - 2 * BORDER);
+    parts[i] = new Particle(int(random(width)), int(random(height)), 5, 0, width - 2 * BORDER, height - 2 * BORDER);
   }
   loadImages();
 }
@@ -56,7 +56,7 @@ void draw() {
         if(parts[i].checkCollision(parts[j])) {
             if(random(1) < prob[parts[i].type][parts[j].type]){
                int[] become = results[parts[i].type][parts[j].type];
-               parts[i].type = become[0]; //<>//
+               parts[i].type = become[0]; //<>// //<>//
                parts[j].type = become[1];
             }
         }
