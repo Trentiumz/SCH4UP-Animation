@@ -7,14 +7,15 @@
  
  */
  
-final int START_SIZE = 40;
+final int START_SIZE = 100;
 final int BORDER = 25;
 
 Particle[] parts;
 double[][] prob = new double[Type.TYPES][Type.TYPES];
 int[][][] results = new int[Type.TYPES][Type.TYPES][2];
 Collider[] collisionTypes = {
-   new Collider(Type.H2O, Type.H2O, 0.2, Type.H3O, Type.OH) 
+   new Collider(Type.H2O, Type.H2O, 0.2, Type.H3O, Type.OH),
+   new Collider(Type.H3O, Type.OH, 0.6, Type.H2O, Type.H2O)
 };
 
 void setup() {
@@ -26,7 +27,7 @@ void setup() {
   
   parts = new Particle[START_SIZE];
   for(int i = 0; i < START_SIZE; i++){
-    parts[i] = new Particle(int(random(width)), int(random(height)), 10, int(random(5)), width - 2 * BORDER, height - 2 * BORDER);
+    parts[i] = new Particle(int(random(width)), int(random(height)), 30, 0, width - 2 * BORDER, height - 2 * BORDER);
   }
   loadImages();
 }
