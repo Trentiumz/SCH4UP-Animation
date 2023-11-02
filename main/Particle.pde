@@ -47,7 +47,7 @@ class Particle {
     }
   }
 
-  void checkCollision(Particle other) {
+  boolean checkCollision(Particle other) {
 
     // Get distances between the balls components
     PVector distanceVect = PVector.sub(other.position, position);
@@ -139,7 +139,11 @@ class Particle {
       velocity.y = cosine * vFinal[0].y + sine * vFinal[0].x;
       other.velocity.x = cosine * vFinal[1].x - sine * vFinal[1].y;
       other.velocity.y = cosine * vFinal[1].y + sine * vFinal[1].x;
+      
+      return true;
     }
+    
+    return false;
   }
 
   void display() {
