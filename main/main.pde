@@ -6,42 +6,27 @@
  * Foundation Actionscript Animation: Making Things Move!
  
  */
- 
-final int[] START_SIZE = {500, 0, 500, 0, 500, 0};
-int TOTAL_SIZE;
+import javax.swing.*;
+import java.awt.*;
+final int START_SIZE = 40;
 final int BORDER = 25;
+//Graph g;
+Window w;
+int m;
 
-Particle[] parts;
-double[][] prob = new double[Type.TYPES][Type.TYPES];
-int[][][] results = new int[Type.TYPES][Type.TYPES][2];
-Collider[] collisionTypes = {
-   new Collider(Type.H2O, Type.H2O, 0.05, Type.H3O, Type.OH),
-   new Collider(Type.H3O, Type.OH, 0.005, Type.H2O, Type.H2O),
-   new Collider(Type.HCO3, Type.H2O, 0.01, Type.H2CO3, Type.OH),
-   new Collider(Type.H2CO3, Type.H2O, 0.05, Type.HCO3, Type.H3O),
-   new Collider(Type.HCO3, Type.H3O, 0.01, Type.H2CO3, Type.H2O),
-   new Collider(Type.H2CO3, Type.OH, 0.05, Type.HCO3, Type.H2O)
-};
+public Particle[] particles;
 
 void setup() {
   size(1280, 720);
-  for(Collider c : collisionTypes) {
-    prob[c.r1][c.r2] = prob[c.r2][c.r1] = c.p;
-    results[c.r1][c.r2] = results[c.r2][c.r1] = new int[]{c.p1, c.p2};
+  particles = new Particle[START_SIZE];
+  for(int i = 0; i < START_SIZE; i++){
+    particles[i] = new Particle(int(random(width)), int(random(height)), 10, int(random(4)), width - 2 * BORDER, height - 2 * BORDER);
   }
-  
-  TOTAL_SIZE = 0;
-  for(int i : START_SIZE){
-     TOTAL_SIZE += i; 
-  }
-  parts = new Particle[TOTAL_SIZE];
-  for(int type = 0, i=0; type < START_SIZE.length; type++){ //<>//
-    for(int j = 0; j < START_SIZE[type]; i++, j++){
-      parts[i] = new Particle(int(random(width)), int(random(height)), 3, type, width - 2 * BORDER, height - 2 * BORDER);
-      System.out.println(i);
-    }
-  }
-
+  w = new Window(1000, 720);
+  String[] args = {"Graph"};
+  PApplet.runSketch(args, w);
+  m = millis();
+  //g = new Graph(640, 360,360, 640 );
   loadImages();
 }
 
@@ -54,33 +39,80 @@ void draw() {
   fill(30);
   rect(0, 0, width - 2 * BORDER, height - 2 * BORDER);
 
-  for (Particle p : parts) {
+  for (Particle p : particles) {
     p.update();
-  } //<>//
+    p.display();
+    p.checkBoundaryCollision();
+  }
   
-  for(int i = 0; i < parts.length; i++){
-     for(int j = i + 1; j < parts.length; j++){
-        if(parts[i].checkCollision(parts[j])) {
-            if(random(1) < prob[parts[i].type][parts[j].type]){
-               int[] become = results[parts[i].type][parts[j].type];
-               parts[i].type = become[0];
-               parts[j].type = become[1];
-            }
-        }
+  for(int i = 0; i < particles.length; i++){
+     for(int j = i + 1; j < particles.length; j++){
+        particles[i].checkCollision(particles[j]); 
      }
   }
-  
-  for(Particle p : parts){
-    p.checkBoundaryCollision();
-    p.display();
-  }
-  
-  int[] cnt = new int[Type.TYPES];
-  for(Particle p : parts){
-     ++cnt[p.type]; 
-  }
-  System.out.println(cnt[Type.H2O] + " " + cnt[Type.H3O] + " " + cnt[Type.OH] + " " + cnt[Type.H2CO3] + " " + cnt[Type.HCO3]);
-  //System.out.println((double) cnt[Type.H3O] / TOTAL_SIZE);
-  
   popMatrix();
+}
+//public class Graph {
+//  public int x, y, w, h;
+//  public Graph(int x, int y, int w, int h){
+//     this.x = x;
+//     this.y = y;
+//     this.w = w;
+//     this.h = h;
+//  }
+//  public void init(){
+    
+//  }
+//  public void update(){
+    
+//  }
+//}
+
+public class Window extends PApplet{
+  int w, h;
+  public Window(int w, int h){
+    this.w = w;
+    this.h = h;
+  }
+  public void settings() {
+    size(w, h);
+  }
+  public void draw() {
+    stroke(0);
+    line(0.1*w, 0.1*h, 0.1*w, 0.9*h);// y-axis
+    line(0.1*w, 0.9*h, 0.9*w, 0.9*h);//x-axis
+    if (abs((millis()*100) % 0.8*w) <0.0001){
+      background(255);
+      fill(255);
+    }
+    plot();
+    
+  }
+  public void plot(){
+    int bicarbonate=0, carbonic=0, water=0, hydronium =0;
+    for (int i = 0; i < START_SIZE; i++){
+      switch(particles[i].type){
+        case 0:
+          water+=1;
+          break;
+        case 1:
+          hydronium+=1;
+          break;
+        case 2:
+          carbonic +=1;
+          break;
+        case 4:
+          bicarbonate+=1;
+          break;
+      }
+    }
+    stroke(255, 0, 0);
+    point(0.1*w+(millis()*100)%0.8*w, 0.9*h-0.8*h*bicarbonate);
+    stroke(0, 255, 0);
+     point(0.1*w+(millis()*100)%0.8*w, 0.9*h-0.8*h*carbonic);
+    stroke(0, 0, 255);
+     point(0.1*w+(millis()*100)%0.8*w, 0.9*h-0.8*h*water);
+    stroke(255, 0, 255);
+     point(0.1*w+(millis()*100)%0.8*w, 0.9*h-0.8*h*hydronium);
+  }
 }
