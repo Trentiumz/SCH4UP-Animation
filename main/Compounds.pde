@@ -15,8 +15,8 @@ void loadImages() {
  images = new PImage[]{loadImage("water.png"), loadImage("hydronium.png"), loadImage("carbonic.png"), loadImage("CO2.png"), loadImage("bicarbonate.png"), loadImage("OH.png")}; 
 }
 
-void drawImage(int type, float x, float y, float s){
-   image(images[type], x, y, s, s);
+void drawImage(int type, float x, float y, float s, PApplet context){
+   context.image(images[type], x, y, s, s);
 }
 
 class Collider {

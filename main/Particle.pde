@@ -11,9 +11,11 @@ class Particle {
   float radius, m;
   int canvasWidth, canvasHeight;
   
+  PApplet context;
+  
   int type;
 
-  Particle(float x, float y, float r_, int type, int canvasWidth, int canvasHeight) {
+  Particle(float x, float y, float r_, int type, int canvasWidth, int canvasHeight, PApplet context) {
     position = new PVector(x, y);
     velocity = PVector.random2D().normalize();
     velocity.mult(SPEED);
@@ -23,10 +25,11 @@ class Particle {
     this.canvasWidth = canvasWidth;
     this.canvasHeight = canvasHeight;
     this.type = type;
+    this.context = context;
   }
   
-  Particle(float x, float y, float r_, int type) {
-    this(x, y, r_, type, width, height);
+  Particle(float x, float y, float r_, int type, PApplet context) {
+    this(x, y, r_, type, width, height, context);
   }
 
   void update() {
@@ -149,6 +152,6 @@ class Particle {
   }
 
   void display() {
-    drawImage(type, position.x - radius, position.y - radius, radius * 2);
+    drawImage(type, position.x - radius, position.y - radius, radius * 2, context);
   }
 }
