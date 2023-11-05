@@ -10,9 +10,13 @@ class Type {
 }
 
 PImage[] images;
+int[] colors;
+String[] names;
 
 void loadImages() {
- images = new PImage[]{loadImage("water.png"), loadImage("hydronium.png"), loadImage("carbonic.png"), loadImage("CO2.png"), loadImage("bicarbonate.png"), loadImage("OH.png")}; 
+ images = new PImage[]{loadImage("water.png"), loadImage("hydronium.png"), loadImage("carbonic.png"), loadImage("CO2.png"), loadImage("bicarbonate.png"), loadImage("OH.png")};
+ colors = new int[]{color(0, 0, 255), color(255, 0, 255), color(255, 0, 0), color(0, 0, 0), color(0, 255, 0), color(0, 0, 0)};
+ names = new String[]{"Water", "Hydronium Ion", "Carbonic Acid", "Carbon Dioxide", "Bicarbonate", "Hydroxide"};
 }
 
 void drawImage(int type, float x, float y, float s, PApplet context){

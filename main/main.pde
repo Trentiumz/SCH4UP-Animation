@@ -33,7 +33,7 @@ void setup() {
 public class Simulation extends PApplet {
    int w, h;
    
-    final int[] START_SIZE = {500, 0, 500, 0, 50, 0};
+    final int[] START_SIZE = {1000, 0, 500, 0, 500, 0};
     int TOTAL_SIZE;
     final int BORDER = 25;
     double[][] prob = new double[Type.TYPES][Type.TYPES];
@@ -41,10 +41,10 @@ public class Simulation extends PApplet {
     Collider[] collisionTypes = {
        new Collider(Type.H2O, Type.H2O, 0.05, Type.H3O, Type.OH),
        new Collider(Type.H3O, Type.OH, 0.005, Type.H2O, Type.H2O),
-       new Collider(Type.HCO3, Type.H2O, 0.01, Type.H2CO3, Type.OH),
-       new Collider(Type.H2CO3, Type.H2O, 0.05, Type.HCO3, Type.H3O),
-       new Collider(Type.HCO3, Type.H3O, 0.01, Type.H2CO3, Type.H2O),
-       new Collider(Type.H2CO3, Type.OH, 0.05, Type.HCO3, Type.H2O)
+       new Collider(Type.HCO3, Type.H2O, 0.05, Type.H2CO3, Type.OH),
+       new Collider(Type.H2CO3, Type.H2O, 0.01, Type.HCO3, Type.H3O),
+       new Collider(Type.HCO3, Type.H3O, 0.05, Type.H2CO3, Type.H2O),
+       new Collider(Type.H2CO3, Type.OH, 0.01, Type.HCO3, Type.H2O)
     };
    
    public Simulation(int w, int h){
@@ -136,7 +136,6 @@ public class Window extends PApplet{
       x = 0;   
     }
     plot();
-    
   }
   
   public void plot(){
@@ -161,22 +160,38 @@ public class Window extends PApplet{
       }
     }
     int total = bicarbonate + carbonic + water + hydronium + hydroxide;
-    stroke(255, 0, 0);
+    stroke(colors[Type.HCO3]);
     //point(0.1*w+(millis()*100)%0.8*w, 0.9*h-0.8*h*bicarbonate);
     point(0.1*w+x,0.8*h - 0.8 * h * bicarbonate / total);
-    stroke(0, 255, 0);
+    stroke(colors[Type.H2CO3]);
     // point(0.1*w+(millis()*100)%0.8*w, 0.9*h-0.8*h*carbonic);
     point(0.1*w+x,0.8*h-0.8 * h * carbonic / total);
-    stroke(0, 0, 255);
+    stroke(colors[Type.H2O]);
      //point(0.1*w+(millis()*100)%0.8*w, 0.9*h-0.8*h*water);
      point(0.1*w+x,0.8*h-0.8 * h * water / total);
-    stroke(255, 0, 255);
+    stroke(colors[Type.H3O]);
      //point(0.1*w+(millis()*100)%0.8*w, 0.9*h-0.8*h*hydronium);
      //point(w/2+millis(), h/2);
      point(0.1*w+x,0.8*h-0.8 * h * hydronium / total);
-     stroke(0, 0, 0);
+     stroke(colors[Type.OH]);
      //point(0.1*w+(millis()*100)%0.8*w, 0.9*h-0.8*h*hydronium);
      //point(w/2+millis(), h/2);
      point(0.1*w+x,0.8*h-0.8 * h * hydroxide / total);
+     
+     textSize(28);
+     fill(0, 0, 0);
+     text("Legend", 800, 40);
+     int cy = 60;
+     int[] amounts = {water, hydronium, carbonic, bicarbonate, hydroxide};
+     int[] indices = {Type.H2O, Type.H3O, Type.H2CO3, Type.HCO3, Type.OH};
+     for(int i = 0; i < indices.length; i++){
+       textSize(14);
+       fill(0, 0, 0);
+       text(names[indices[i]], 800, cy);
+       fill(colors[indices[i]]);
+       rect(950, cy-14, 14, 14);
+       cy += 20;
+     }
+
    }
 }
