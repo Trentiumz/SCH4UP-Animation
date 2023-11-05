@@ -14,7 +14,7 @@ Window graph;
 Simulation simulation;
 
 // global variables
-Particle[] parts = {};
+ArrayList<Particle> parts = new ArrayList<Particle>();
 
 void setup() {
   graph = new Window(1000, 720);
@@ -35,8 +35,7 @@ void setup() {
 public class Simulation extends PApplet {
    int w, h;
    
-    final int[] START_SIZE = {1000, 0, 100, 0, 500, 0};
-    int TOTAL_SIZE;
+    final int[] START_SIZE = {1000, 0, 300, 0, 400, 0};
     final int BORDER = 25;
     double[][] prob = new double[Type.TYPES][Type.TYPES];
     int[][][] results = new int[Type.TYPES][Type.TYPES][2];
@@ -64,20 +63,16 @@ public class Simulation extends PApplet {
         results[c.r1][c.r2] = results[c.r2][c.r1] = new int[]{c.p1, c.p2};
       }
       
-      TOTAL_SIZE = 0;
-      for(int i : START_SIZE){
-         TOTAL_SIZE += i; 
-      }
-      parts = new Particle[TOTAL_SIZE];
-      for(int type = 0, i=0; type < START_SIZE.length; type++){ 
-        for(int j = 0; j < START_SIZE[type]; i++, j++){
-          parts[i] = new Particle(int(random(width)), int(random(height)), 3, type, width - 2 * BORDER, height - 2 * BORDER, this);
+      parts = new ArrayList<Particle>();
+      for(int type = 0; type < START_SIZE.length; type++){ 
+        for(int j = 0; j < START_SIZE[type]; j++){
+          parts.add(new Particle(int(random(width)), int(random(height)), 3, type, width - 2 * BORDER, height - 2 * BORDER, this));
         }
       }
    }
    
    public void draw() {
-    background(0); //<>//
+    background(0);
     
     pushMatrix();
     translate(BORDER, BORDER);
@@ -89,13 +84,15 @@ public class Simulation extends PApplet {
       p.update();
     }
     
-    for(int i = 0; i < parts.length; i++){
-       for(int j = i + 1; j < parts.length; j++){
-          if(parts[i].checkCollision(parts[j])) {
-              if(random(1) < prob[parts[i].type][parts[j].type]){
-                 int[] become = results[parts[i].type][parts[j].type];
-                 parts[i].type = become[0];
-                 parts[j].type = become[1];
+    for(int i = 0; i < parts.size(); i++){
+       for(int j = i + 1; j < parts.size(); j++){
+          Particle a = parts.get(i);
+          Particle b = parts.get(j);
+          if(a.checkCollision(b)) {
+              if(random(1) < prob[a.type][b.type]){
+                 int[] become = results[a.type][b.type];
+                 a.type = become[0];
+                 b.type = become[1];
               }
           }
        }
@@ -106,7 +103,7 @@ public class Simulation extends PApplet {
       p.display();
     }
     
-    popMatrix();  //<>//
+    popMatrix(); 
    }
 }
 
@@ -142,8 +139,8 @@ public class Window extends PApplet{
   
   public void plot(){
     int bicarbonate=0, carbonic=0, water=0, hydronium =0, hydroxide = 0;
-    for (int i = 0; i < parts.length; i++){
-      switch(parts[i].type){
+    for (int i = 0; i < parts.size(); i++){
+      switch(parts.get(i).type){
         case 0:
           water+=1;
           break;
@@ -195,23 +192,29 @@ public class Window extends PApplet{
        cy += 20;
      }
 
-     float H3OConc = (float) hydronium / total;
+     float H3OConc = (float) hydronium / 30;
      fill(255, 255, 255);
-     rect(600, 25, 120, 20);
+     rect(600, 25, 155, 20);
      fill(0, 0, 0);
-     text("[H3O] = " + nf(H3OConc, 0, 5), 600, 40);
+     text("[H3O] = " + nf(H3OConc, 0, 5)+"*10^-8", 600, 40);
      
-     float HCO3Conc = (float) bicarbonate / total;
+     float HCO3Conc = (float) bicarbonate / 30;
      fill(255, 255, 255);
-     rect(600, 55, 130, 20);
+     rect(600, 55, 155, 20);
      fill(0, 0, 0);
-     text("[HCO3] = " + nf(HCO3Conc, 0, 5), 600, 70);
+     text("[HCO3] = " + nf(HCO3Conc, 0, 5)+"*10^-8", 600, 70);
      
-     float H2CO3Conc = (float) carbonic / total;
+     float H2CO3Conc = (float) carbonic / 30;
      fill(255, 255, 255);
-     rect(600, 85, 140, 20);
+     rect(600, 85, 155, 20);
      fill(0, 0, 0);
-     text("[H2CO3] = " + nf(H2CO3Conc, 0, 5), 600, 100);
+     text("[H2CO3] = " + nf(H2CO3Conc, 0,5)+"*10^-8", 600, 100);
+     
+     float pH = -1*log(H3OConc*pow(10, -8))/log(10);
+     fill(255, 255, 255);
+     rect(600, 115, 155, 20);
+     fill(0, 0, 0);
+     text("pH = " + nf(pH, 0,6), 600, 130);
 
    }
 }
