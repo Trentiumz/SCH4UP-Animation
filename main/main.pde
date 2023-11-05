@@ -35,17 +35,17 @@ void setup() {
 public class Simulation extends PApplet {
    int w, h;
    
-    final int[] START_SIZE = {1000, 0, 300, 0, 400, 0};
+    final int[] START_SIZE = {1000, 200, 0, 0, 600, 0};
     final int BORDER = 25;
     double[][] prob = new double[Type.TYPES][Type.TYPES];
     int[][][] results = new int[Type.TYPES][Type.TYPES][2];
     Collider[] collisionTypes = {
-       new Collider(Type.H2O, Type.H2O, 0.05, Type.H3O, Type.OH),
-       new Collider(Type.H3O, Type.OH, 0.05, Type.H2O, Type.H2O),
-       new Collider(Type.HCO3, Type.H2O, 0.05, Type.H2CO3, Type.OH),
+       new Collider(Type.H2O, Type.H2O, 0.001, Type.H3O, Type.OH),
+       new Collider(Type.H3O, Type.OH, 0.1, Type.H2O, Type.H2O),
+       new Collider(Type.HCO3, Type.H2O, 0.02, Type.H2CO3, Type.OH),
        new Collider(Type.H2CO3, Type.H2O, 0.01, Type.HCO3, Type.H3O),
        new Collider(Type.HCO3, Type.H3O, 0.05, Type.H2CO3, Type.H2O),
-       new Collider(Type.H2CO3, Type.OH, 0.01, Type.HCO3, Type.H2O)
+       new Collider(Type.H2CO3, Type.OH, 0.05, Type.HCO3, Type.H2O)
     };
    
    public Simulation(int w, int h){
@@ -161,21 +161,21 @@ public class Window extends PApplet{
     int total = bicarbonate + carbonic + water + hydronium + hydroxide;
     stroke(colors[Type.HCO3]);
     //point(0.1*w+(millis()*100)%0.8*w, 0.9*h-0.8*h*bicarbonate);
-    point(0.1*w+x,0.8*h - 0.8 * h * bicarbonate / total);
+    point(0.1*w+x,0.9*h - 0.9 * h * bicarbonate / total);
     stroke(colors[Type.H2CO3]);
     // point(0.1*w+(millis()*100)%0.8*w, 0.9*h-0.8*h*carbonic);
-    point(0.1*w+x,0.8*h-0.8 * h * carbonic / total);
+    point(0.1*w+x,0.9*h-0.9 * h * carbonic / total);
     stroke(colors[Type.H2O]);
      //point(0.1*w+(millis()*100)%0.8*w, 0.9*h-0.8*h*water);
-     point(0.1*w+x,0.8*h-0.8 * h * water / total);
+     point(0.1*w+x,0.9*h-0.9 * h * water / total);
     stroke(colors[Type.H3O]);
      //point(0.1*w+(millis()*100)%0.8*w, 0.9*h-0.8*h*hydronium);
      //point(w/2+millis(), h/2);
-     point(0.1*w+x,0.8*h-0.8 * h * hydronium / total);
+     point(0.1*w+x,0.9*h-0.9 * h * hydronium / total);
      stroke(colors[Type.OH]);
      //point(0.1*w+(millis()*100)%0.8*w, 0.9*h-0.8*h*hydronium);
      //point(w/2+millis(), h/2);
-     point(0.1*w+x,0.8*h-0.8 * h * hydroxide / total);
+     point(0.1*w+x,0.9*h-0.9 * h * hydroxide / total);
      
      textSize(28);
      fill(0, 0, 0);
@@ -192,19 +192,19 @@ public class Window extends PApplet{
        cy += 20;
      }
 
-     float H3OConc = (float) hydronium / 30;
+     float H3OConc = (float) hydronium /29;
      fill(255, 255, 255);
      rect(600, 25, 155, 20);
      fill(0, 0, 0);
      text("[H3O] = " + nf(H3OConc, 0, 5)+"*10^-8", 600, 40);
      
-     float HCO3Conc = (float) bicarbonate / 30;
+     float HCO3Conc = (float) bicarbonate /29;
      fill(255, 255, 255);
      rect(600, 55, 155, 20);
      fill(0, 0, 0);
      text("[HCO3] = " + nf(HCO3Conc, 0, 5)+"*10^-8", 600, 70);
      
-     float H2CO3Conc = (float) carbonic / 30;
+     float H2CO3Conc = (float) carbonic /29;
      fill(255, 255, 255);
      rect(600, 85, 155, 20);
      fill(0, 0, 0);
