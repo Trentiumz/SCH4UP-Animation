@@ -28,12 +28,14 @@ void setup() {
   
   String[] args = {"Graph"};
   PApplet.runSketch(args, graph);
+  
+  surface.setVisible(false);
 }
 
 public class Simulation extends PApplet {
    int w, h;
    
-    final int[] START_SIZE = {1000, 0, 500, 0, 500, 0};
+    final int[] START_SIZE = {1000, 0, 100, 0, 500, 0};
     int TOTAL_SIZE;
     final int BORDER = 25;
     double[][] prob = new double[Type.TYPES][Type.TYPES];
@@ -192,6 +194,24 @@ public class Window extends PApplet{
        rect(950, cy-14, 14, 14);
        cy += 20;
      }
+
+     float H3OConc = (float) hydronium / total;
+     fill(255, 255, 255);
+     rect(600, 25, 120, 20);
+     fill(0, 0, 0);
+     text("[H3O] = " + nf(H3OConc, 0, 5), 600, 40);
+     
+     float HCO3Conc = (float) bicarbonate / total;
+     fill(255, 255, 255);
+     rect(600, 55, 130, 20);
+     fill(0, 0, 0);
+     text("[HCO3] = " + nf(HCO3Conc, 0, 5), 600, 70);
+     
+     float H2CO3Conc = (float) carbonic / total;
+     fill(255, 255, 255);
+     rect(600, 85, 140, 20);
+     fill(0, 0, 0);
+     text("[H2CO3] = " + nf(H2CO3Conc, 0, 5), 600, 100);
 
    }
 }
