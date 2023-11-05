@@ -33,7 +33,7 @@ void setup() {
 public class Simulation extends PApplet {
    int w, h;
    
-    final int[] START_SIZE = {500, 0, 500, 0, 500, 0};
+    final int[] START_SIZE = {500, 0, 500, 0, 50, 0};
     int TOTAL_SIZE;
     final int BORDER = 25;
     double[][] prob = new double[Type.TYPES][Type.TYPES];
@@ -140,7 +140,7 @@ public class Window extends PApplet{
   }
   
   public void plot(){
-    int bicarbonate=0, carbonic=0, water=0, hydronium =0;
+    int bicarbonate=0, carbonic=0, water=0, hydronium =0, hydroxide = 0;
     for (int i = 0; i < parts.length; i++){
       switch(parts[i].type){
         case 0:
@@ -154,21 +154,29 @@ public class Window extends PApplet{
           break;
         case 4:
           bicarbonate+=1;
+          break;  
+        case 5:
+          hydroxide += 1;
           break;
       }
     }
+    int total = bicarbonate + carbonic + water + hydronium + hydroxide;
     stroke(255, 0, 0);
     //point(0.1*w+(millis()*100)%0.8*w, 0.9*h-0.8*h*bicarbonate);
-    point(0.1*w+x,0.8*h+bicarbonate);
+    point(0.1*w+x,0.8*h - 0.8 * h * bicarbonate / total);
     stroke(0, 255, 0);
     // point(0.1*w+(millis()*100)%0.8*w, 0.9*h-0.8*h*carbonic);
-    point(0.1*w+x,0.8*h+carbonic);
+    point(0.1*w+x,0.8*h-0.8 * h * carbonic / total);
     stroke(0, 0, 255);
      //point(0.1*w+(millis()*100)%0.8*w, 0.9*h-0.8*h*water);
-     point(0.1*w+x,0.8*h+water);
+     point(0.1*w+x,0.8*h-0.8 * h * water / total);
     stroke(255, 0, 255);
      //point(0.1*w+(millis()*100)%0.8*w, 0.9*h-0.8*h*hydronium);
      //point(w/2+millis(), h/2);
-     point(0.1*w+x,0.8*h+hydronium);
+     point(0.1*w+x,0.8*h-0.8 * h * hydronium / total);
+     stroke(0, 0, 0);
+     //point(0.1*w+(millis()*100)%0.8*w, 0.9*h-0.8*h*hydronium);
+     //point(w/2+millis(), h/2);
+     point(0.1*w+x,0.8*h-0.8 * h * hydroxide / total);
    }
 }
