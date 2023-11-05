@@ -1,4 +1,4 @@
-/**
+/** //<>// //<>//
  * Circle Collision with Swapping Velocities
  * by Ira Greenberg. 
  * 
@@ -41,7 +41,7 @@ public class Simulation extends PApplet {
     int[][][] results = new int[Type.TYPES][Type.TYPES][2];
     Collider[] collisionTypes = {
        new Collider(Type.H2O, Type.H2O, 0.05, Type.H3O, Type.OH),
-       new Collider(Type.H3O, Type.OH, 0.005, Type.H2O, Type.H2O),
+       new Collider(Type.H3O, Type.OH, 0.05, Type.H2O, Type.H2O),
        new Collider(Type.HCO3, Type.H2O, 0.05, Type.H2CO3, Type.OH),
        new Collider(Type.H2CO3, Type.H2O, 0.01, Type.HCO3, Type.H3O),
        new Collider(Type.HCO3, Type.H3O, 0.05, Type.H2CO3, Type.H2O),
@@ -98,9 +98,9 @@ public class Simulation extends PApplet {
        }
     }
     
-    for(Particle p : parts){
-      p.checkBoundaryCollision();
-      p.display();
+    for(int i = 0; i < parts.size(); i++){
+      parts.get(i).checkBoundaryCollision();
+      parts.get(i).display();
     }
     
     popMatrix(); 
@@ -215,6 +215,50 @@ public class Window extends PApplet{
      rect(600, 115, 155, 20);
      fill(0, 0, 0);
      text("pH = " + nf(pH, 0,6), 600, 130);
+     
+     button(450, 25, 80, 20, "HCO3");
+     if ( button(450, 25, 80, 20, "HCO3")){
+       for (int i =0; i< 30; i++){
+          parts.add(new Particle(int(random(width)), int(random(height)), 3, Type.HCO3, width - 2 * 25, height - 2 * 25, simulation));
+       }
+     }
+     button(350, 25, 80, 20, "H2CO3");
+     if ( button(350, 25, 80, 20, "H2CO3")){
+       for (int i =0; i< 30; i++){
+          parts.add(new Particle(int(random(width)), int(random(height)), 3, Type.H2CO3, width - 2 * 25, height - 2 * 25, simulation));
+       }
+     }
+     button(250, 25, 80, 20, "H3O");
+     if ( button(250, 25, 80, 20, "H3O")){
+       for (int i =0; i< 30; i++){
+          parts.add(new Particle(int(random(width)), int(random(height)), 3, Type.H3O, width - 2 * 25, height - 2 * 25, simulation));
+       }
+     }
+     button(150, 25, 80, 20, "OH");
+     if ( button(150, 25, 80, 20, "OH")){
+       for (int i =0; i< 30; i++){
+          parts.add(new Particle(int(random(width)), int(random(height)), 3, Type.OH, width - 2 * 25, height - 2 * 25, simulation));
+       }
+     }
 
+   }
+   public boolean button(int x, int y, int w, int h, String text){
+     if (mouseX > x && mouseX <x+w && mouseY > y &&mouseY <y+h){
+       fill(200);
+       rect(x, y, w, h);
+       fill(0);
+       text(text, x+w/3,y+2*h/3);
+       if (mousePressed){
+         return true;
+       }
+       else{
+         return false;
+       }
+     }
+     fill(255);
+     rect(x, y, w, h);
+     fill(0);
+     text(text, x+w/3,y+2*h/3);
+     return false;
    }
 }
