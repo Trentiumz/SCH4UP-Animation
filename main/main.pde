@@ -169,6 +169,8 @@ public class Window extends PApplet{
       }
     }
     int total = bicarbonate + carbonic + water + hydronium + hydroxide;
+    strokeWeight(2);
+    
     stroke(colors[Type.HCO3]);
     //point(0.1*w+(millis()*100)%0.8*w, 0.9*h-0.8*h*bicarbonate);
     point(0.1*w+x,0.9*h - 0.9 * h * bicarbonate / total);
@@ -187,6 +189,7 @@ public class Window extends PApplet{
      //point(w/2+millis(), h/2);
      point(0.1*w+x,0.9*h-0.9 * h * hydroxide / total);
      
+     textAlign(LEFT, BOTTOM);
      textSize(28);
      fill(0, 0, 0);
      text("Legend", 800, 40);
@@ -201,7 +204,8 @@ public class Window extends PApplet{
        rect(950, cy-14, 14, 14);
        cy += 20;
      }
-
+     
+     textAlign(LEFT, BOTTOM);
      float H3OConc = (float) hydronium /29;
      fill(255, 255, 255);
      rect(600, 25, 155, 20);
@@ -253,11 +257,13 @@ public class Window extends PApplet{
 
    }
    public boolean button(int x, int y, int w, int h, String text){
+     textAlign(CENTER, CENTER);
+     
      if (mouseX > x && mouseX <x+w && mouseY > y &&mouseY <y+h){
        fill(200);
        rect(x, y, w, h);
        fill(0);
-       text(text, x+w/3,y+2*h/3);
+       text(text, x,y, w, h);
        if (mousePressed){
          return true;
        }
@@ -265,10 +271,11 @@ public class Window extends PApplet{
          return false;
        }
      }
+     
      fill(255);
      rect(x, y, w, h);
      fill(0);
-     text(text, x+w/3,y+2*h/3);
+     text(text, x,y, w, h);
      return false;
    }
 }
