@@ -12,30 +12,111 @@ import java.awt.*;
 //Graph g;
 Window graph;
 Simulation simulation;
+Loading preScreen;
 
 // global variables
 ArrayList<Particle> parts = new ArrayList<Particle>();
 
 void setup() {
-  graph = new Window(1000, 720);
-  simulation = new Simulation(1280, 720);
-  simulation.setup();
-  
   loadImages();
   
-  args = new String[] {"Simulation"};
-  PApplet.runSketch(args, simulation);
-  
-  String[] args = {"Graph"};
-  PApplet.runSketch(args, graph);
+  preScreen = new Loading(640, 320);
+  String[] args = new String[] {"Loading"};
+  PApplet.runSketch(args, preScreen);
   
   surface.setVisible(false);
+}
+
+void loop(){
+  rect(0, 0, 100, 100);
+}
+
+public class Loading extends PApplet {
+  int w, h;
+  Button buffered, unBuffered;
+  final int buttonWidth = 400;
+  final int buttonHeight = 30;
+  
+  class Button{
+     int x, y, w, h;
+     String text;
+     
+     public Button(int x, int y, int w, int h, String text){
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.text = text;
+     }
+     
+     void draw(){
+        fill(inBound() ? 220 : 255);
+        stroke(0);
+        strokeWeight(3);
+        rect(x, y, w, h);
+        
+        textAlign(CENTER, CENTER);
+        textSize(18);
+        fill(0);
+        text(text, x, y, w, h);
+     }
+     
+     boolean inBound(int curX, int curY){
+        return x <= curX && curX <= x+w && y <= curY && curY <= y+h; 
+     }
+     
+     boolean inBound(){
+        return inBound(mouseX, mouseY); 
+     }
+  }
+  
+  public Loading(int w, int h){
+    this.w = w;
+    this.h = h;
+    
+    this.buffered = new Button(w / 2 - buttonWidth / 2, 100, buttonWidth, buttonHeight, "Begin Buffered Simulation");
+    this.unBuffered = new Button(w / 2 - buttonWidth / 2, 100 + (int) (buttonHeight * 1.3), buttonWidth, buttonHeight, "Begin Non-Buffered Simulation");
+  }
+  
+  void settings(){
+     size(w, h); 
+  }
+  
+  void draw(){
+     background(255);
+     
+     buffered.draw();
+     unBuffered.draw();
+  }
+  
+  void mousePressed(){
+    if(buffered.inBound() || unBuffered.inBound()){
+      int[] startSize;
+      if(buffered.inBound()){
+        startSize = new int[]{1000, 0, 600, 0, 800, 0};
+      } else {
+        startSize = new int[]{1000, 50, 0, 0, 0, 0};
+      }
+      
+      this.getSurface().setVisible(false);
+      graph = new Window(1000, 720);
+      
+      simulation = new Simulation(1280, 720, startSize);
+      simulation.setup();
+      
+      args = new String[] {"Simulation"};
+      PApplet.runSketch(args, simulation);
+      
+      String[] args = {"Graph"};
+      PApplet.runSketch(args, graph); 
+    }
+  }
 }
 
 public class Simulation extends PApplet {
    int w, h;
    
-    final int[] START_SIZE = {1000, 0, 600, 0, 800, 0};
+    int[] START_SIZE = {1000, 50, 0, 0, 0, 0};
     final int BORDER = 100;
     final int VESSEL = 25;
     double[][] prob = new double[Type.TYPES][Type.TYPES];
@@ -52,6 +133,11 @@ public class Simulation extends PApplet {
    public Simulation(int w, int h){
       this.w = w;
       this.h = h;
+   }
+   
+   public Simulation(int w, int h, int[] START_SIZE){
+       this(w, h);
+       this.START_SIZE = START_SIZE;
    }
    
    public void settings() {
