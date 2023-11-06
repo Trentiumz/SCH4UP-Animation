@@ -1,4 +1,4 @@
-/** //<>// //<>//
+/** //<>// //<>// //<>//
  * Circle Collision with Swapping Velocities
  * by Ira Greenberg. 
  * 
@@ -17,6 +17,7 @@ Simulation simulation;
 ArrayList<Particle> parts = new ArrayList<Particle>();
 
 void setup() {
+  //delay(10000);
   graph = new Window(1000, 720);
   simulation = new Simulation(1280, 720);
   simulation.setup();
@@ -25,9 +26,11 @@ void setup() {
   
   args = new String[] {"Simulation"};
   PApplet.runSketch(args, simulation);
+  simulation.getSurface().setLocation(-20,0);
   
   String[] args = {"Graph"};
   PApplet.runSketch(args, graph);
+  graph.getSurface().setLocation(910, 0);
   
   surface.setVisible(false);
 }
@@ -169,8 +172,6 @@ public class Window extends PApplet{
       }
     }
     int total = bicarbonate + carbonic + water + hydronium + hydroxide;
-    strokeWeight(2);
-    
     stroke(colors[Type.HCO3]);
     //point(0.1*w+(millis()*100)%0.8*w, 0.9*h-0.8*h*bicarbonate);
     point(0.1*w+x,0.9*h - 0.9 * h * bicarbonate / total);
@@ -189,10 +190,17 @@ public class Window extends PApplet{
      //point(w/2+millis(), h/2);
      point(0.1*w+x,0.9*h-0.9 * h * hydroxide / total);
      
-     textAlign(LEFT, BOTTOM);
      textSize(28);
      fill(0, 0, 0);
      text("Legend", 800, 40);
+     textSize(18);
+     text("Time", 0.5*w, 0.95*h);
+     pushMatrix();
+     translate( 0.06*w, 0.52*h);
+     rotate(3*PI/2);
+     fill(0, 0, 0);
+     text("Number of Particles",0,0);
+     popMatrix();
      int cy = 60;
      int[] amounts = {water, hydronium, carbonic, bicarbonate, hydroxide};
      int[] indices = {Type.H2O, Type.H3O, Type.H2CO3, Type.HCO3, Type.OH};
@@ -204,8 +212,7 @@ public class Window extends PApplet{
        rect(950, cy-14, 14, 14);
        cy += 20;
      }
-     
-     textAlign(LEFT, BOTTOM);
+
      float H3OConc = (float) hydronium /29;
      fill(255, 255, 255);
      rect(600, 25, 155, 20);
@@ -257,13 +264,11 @@ public class Window extends PApplet{
 
    }
    public boolean button(int x, int y, int w, int h, String text){
-     textAlign(CENTER, CENTER);
-     
      if (mouseX > x && mouseX <x+w && mouseY > y &&mouseY <y+h){
        fill(200);
        rect(x, y, w, h);
        fill(0);
-       text(text, x,y, w, h);
+       text(text, x+w/3,y+2*h/3);
        if (mousePressed){
          return true;
        }
@@ -271,11 +276,10 @@ public class Window extends PApplet{
          return false;
        }
      }
-     
      fill(255);
      rect(x, y, w, h);
      fill(0);
-     text(text, x,y, w, h);
+     text(text, x+w/3,y+2*h/3);
      return false;
    }
 }
