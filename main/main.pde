@@ -35,8 +35,9 @@ void setup() {
 public class Simulation extends PApplet {
    int w, h;
    
-    final int[] START_SIZE = {1000, 200, 0, 0, 600, 0};
-    final int BORDER = 25;
+    final int[] START_SIZE = {1000, 0, 600, 0, 800, 0};
+    final int BORDER = 100;
+    final int VESSEL = 25;
     double[][] prob = new double[Type.TYPES][Type.TYPES];
     int[][][] results = new int[Type.TYPES][Type.TYPES][2];
     Collider[] collisionTypes = {
@@ -66,19 +67,28 @@ public class Simulation extends PApplet {
       parts = new ArrayList<Particle>();
       for(int type = 0; type < START_SIZE.length; type++){ 
         for(int j = 0; j < START_SIZE[type]; j++){
-          parts.add(new Particle(int(random(width)), int(random(height)), 3, type, width - 2 * BORDER, height - 2 * BORDER, this));
+          parts.add(new Particle(int(random(width)), int(random(height)), 3, type, width, height - 2 * BORDER, this));
         }
       }
    }
    
    public void draw() {
-    background(0);
+    background(#c74f37);
+    fill(0, 0, 0);
+    textSize(32);
+    textAlign(CENTER, CENTER);
+    text("Blood Buffers by Daniel and Ryan", 0, 0, width, BORDER - VESSEL);
     
     pushMatrix();
-    translate(BORDER, BORDER);
+    translate(0, BORDER);
     
-    fill(30);
-    rect(0, 0, width - 2 * BORDER, height - 2 * BORDER);
+    fill(#fdf4b1);
+    strokeWeight(0);
+    rect(0, -VESSEL, width, VESSEL);
+    rect(0, height - 2 * BORDER, width, VESSEL);
+    
+    fill(30, 0, 0);
+    rect(0, 0, width, height - 2 * BORDER);
   
     for (Particle p : parts) {
       p.update();

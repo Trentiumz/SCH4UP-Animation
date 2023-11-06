@@ -53,6 +53,7 @@ class Particle {
   }
 
   boolean checkCollision(Particle other) {
+    if(other == null) return false;
 
     // Get distances between the balls components
     PVector distanceVect = PVector.sub(other.position, position);
